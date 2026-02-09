@@ -23,7 +23,7 @@ function getPrivateKey(): string {
       .replace(/(-----BEGIN [A-Z ]+-----)/, "$1\n")
       .replace(/(-----END [A-Z ]+-----)/, "\n$1");
     const match = key.match(
-      /(-----BEGIN [A-Z ]+-----)\n([\s\S]+)\n(-----END [A-Z ]+-----)/
+      /(-----BEGIN [A-Z ]+-----)\n([\s\S]+)\n(-----END [A-Z ]+-----) /
     );
     if (match) {
       const body = match[2].replace(/\s/g, "");
@@ -242,6 +242,10 @@ export function parsePaymentResponse(body: Record<string, string>) {
     currency: body.CURRENCY || "",
     isSuccessful: (body.ACTION || body.ACTION_CODE || "") === "0",
   };
+}
+
+export function isBoricaConfigured(): boolean {
+  return !!(BORICA_MID && BORICA_TID && getPrivateKey());
 }
 
 export function isBoricaConfigured(): boolean {
